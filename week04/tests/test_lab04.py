@@ -62,3 +62,26 @@ def test_get_list_of_even_numbers_all_even():
 
 def test_get_list_of_even_numbers_empty():
     assert get_list_of_even_numbers([]) == []
+
+def test_find_common_elements_with_duplicates():
+    l1 = [1, 1, 2, 3, 3]
+    l2 = [1, 2, 2, 4, 5]
+    result = find_common_elements(l1, l2)
+    assert set(result) == {1, 2}
+
+
+def test_find_user_by_name_case_sensitivity(sample_users):
+    assert find_user_by_name(sample_users, "Alice") is None
+    assert find_user_by_name(sample_users, "alice") is not None
+
+
+def test_get_list_of_even_numbers_with_zero():
+    assert get_list_of_even_numbers([0, 1, 2, 3]) == [0, 2]
+
+
+def test_get_list_of_even_numbers_preserves_order():
+    assert get_list_of_even_numbers([10, 1, 8, 3, 6, 5, 4]) == [10, 8, 6, 4]
+
+
+def test_get_list_of_even_numbers_negative():
+    assert get_list_of_even_numbers([-4, -3, -2, -1, 0, 1, 2]) == [-4, -2, 0, 2]
