@@ -1,8 +1,8 @@
 import argparse
 
-from lab08.favorites import FavoritesManager
-from lab08.weather_api import WeatherAPI, format_current_weather, format_forecast
-from lab08.config import WEATHER_API_KEY, WEATHER_API_BASE_URL
+from week08.favorites import FavoritesManager
+from week08.weather_api import WeatherAPI, format_current_weather, format_forecast
+from week08.config import WEATHER_API_KEY, WEATHER_API_BASE_URL
 
 
 def resolve_location(location, favorites_manager):

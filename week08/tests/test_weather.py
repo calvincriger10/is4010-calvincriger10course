@@ -1,7 +1,7 @@
 import os
 import pytest
 
-from lab08.favorites import FavoritesManager
+from week08.favorites import FavoritesManager
 
 
 @pytest.fixture
