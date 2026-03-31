@@ -1,4 +1,5 @@
 name: Week 09 - Rust
+
 on:
   workflow_dispatch:
   push:
@@ -19,7 +20,7 @@ jobs:
       - name: Check if Rust project exists
         id: check_rust
         run: |
-          if [ -f "week09/src/main.rs" ] && [ -s "week09/src/main.rs" ]; then
+          if [ -f "week09/rust_basics/src/main.rs" ] && [ -f "week09/rust_basics/Cargo.toml" ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -27,19 +28,19 @@ jobs:
 
       - name: Run cargo test
         if: steps.check_rust.outputs.exists == 'true'
-        run: cd week09 && cargo test --verbose
+        run: cd week09/rust_basics && cargo test --verbose
 
       - name: Run cargo fmt check
         if: steps.check_rust.outputs.exists == 'true'
-        run: cd week09 && cargo fmt --check
+        run: cd week09/rust_basics && cargo fmt --check
 
       - name: Run cargo clippy
         if: steps.check_rust.outputs.exists == 'true'
-        run: cd week09 && cargo clippy -- -D warnings
+        run: cd week09/rust_basics && cargo clippy -- -D warnings
 
       - name: Rust project not found
         if: steps.check_rust.outputs.exists == 'false'
         run: |
-          echo "❌ week09/src/main.rs not found or empty"
+          echo "❌ week09/rust_basics/src/main.rs or Cargo.toml not found"
           echo "Create/update this file to start the lab"
           exit 1
