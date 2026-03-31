@@ -1,6 +1,6 @@
 # test_lab06.py
 import pytest
-from lab06 import Book, EBook
+from week06.lab06 import Book, EBook
 
 
 # Tests for the base Book class

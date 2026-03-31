@@ -3,7 +3,7 @@ import os
 
 
 class FavoritesManager:
-    def __init__(self, filename="week08/favorites.json"):
+    def __init__(self, filename="lab08/favorites.json"):
         self.filename = filename
         self.favorites = self._load()
 
