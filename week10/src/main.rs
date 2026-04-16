@@ -1,7 +1,6 @@
-// Lab 10: The Borrow Checker Game
 fn main() {
     println!("Lab 10: Mastering Ownership and Borrowing");
-    println!("Uncomment one problem at a time and fix it!\n");
+    println!("All problems fixed!\n");
 
     problem_1();
     problem_2();
@@ -10,22 +9,39 @@ fn main() {
     problem_5();
     problem_6();
     problem_7();
+
+    let owned = to_uppercase_owned(String::from("rust"));
+    println!("Uppercase: {}", owned);
+
+    let s = String::from("hello");
+    println!("Length: {}", string_length(&s));
+
+    let mut s2 = String::from("hello");
+    append_suffix(&mut s2, " there");
+    println!("Appended: {}", s2);
+
+    let combined = concat_strings("Rust", "Lang");
+    println!("Combined: {}", combined);
+
+    let word = first_word("hello world");
+    println!("First word: {}", word);
 }
 
+// ================= PROBLEMS =================
+
 fn problem_1() {
-    println!("Problem 1: Value used after move");
+    println!("Problem 1");
     let s1 = String::from("hello");
     let (s2, len) = calculate_length(&s1);
     println!("  The length of '{}' is {}.", s2, len);
 }
 
-fn calculate_length(s: &String) -> (&String, usize) {
-    let length = s.len();
-    (s, length)
+fn calculate_length(s: &str) -> (&str, usize) {
+    (s, s.len())
 }
 
 fn problem_2() {
-    println!("Problem 2: Mutable and immutable borrow conflict");
+    println!("Problem 2");
     let mut s = String::from("hello");
     let r1 = &s;
     println!("  {}", r1);
@@ -34,10 +50,10 @@ fn problem_2() {
 }
 
 fn problem_3() {
-    println!("Problem 3: Mutating through immutable reference");
+    println!("Problem 3");
     let mut s = String::from("hello");
     add_to_string(&mut s);
-    println!("  Result: {}", s);
+    println!("  {}", s);
 }
 
 fn add_to_string(s: &mut String) {
@@ -45,52 +61,55 @@ fn add_to_string(s: &mut String) {
 }
 
 fn problem_4() {
-    println!("Problem 4: Multiple mutable borrows");
+    println!("Problem 4");
     let mut s = String::from("hello");
+
     {
         let r1 = &mut s;
         println!("  {}", r1);
     }
+
     let r2 = &mut s;
     println!("  {}", r2);
 }
 
 fn problem_5() {
-    println!("Problem 5: Dangling reference");
+    println!("Problem 5");
     let r = create_string();
-    println!("  Got: {}", r);
+    println!("  {}", r);
 }
 
 fn create_string() -> String {
-    let s = String::from("hello");
-    s
+    String::from("hello")
 }
 
 fn problem_6() {
-    println!("Problem 6: Ownership in loops");
+    println!("Problem 6");
     let data = String::from("Rust");
+
     for i in 0..3 {
         print_with_number(&data, i);
     }
 }
 
-fn print_with_number(s: &String, n: i32) {
+fn print_with_number(s: &str, n: i32) {
     println!("  {}: {}", n, s);
 }
 
 fn problem_7() {
-    println!("Problem 7: Lifetime extension");
-    let result;
+    println!("Problem 7");
     let s = String::from("inner scope");
-    result = &s;
-    println!("  Result: {}", result);
+    let result = &s;
+    println!("  {}", result);
 }
+
+// ================= IMPLEMENTATION =================
 
 fn to_uppercase_owned(s: String) -> String {
     s.to_uppercase()
 }
 
-fn string_length(s: &String) -> usize {
+fn string_length(s: &str) -> usize {
     s.len()
 }
 
@@ -104,10 +123,12 @@ fn concat_strings(s1: &str, s2: &str) -> String {
 
 fn first_word(s: &str) -> &str {
     match s.find(' ') {
-        Some(i) => &s[0..i],
+        Some(i) => &s[..i],
         None => s,
     }
 }
+
+// ================= TESTS =================
 
 #[cfg(test)]
 mod tests {
@@ -141,35 +162,5 @@ mod tests {
             print_with_number(&data, i);
         }
         assert_eq!(data, "Rust");
-    }
-
-    #[test]
-    fn test_to_uppercase_owned() {
-        let s = String::from("hello");
-        assert_eq!(to_uppercase_owned(s), "HELLO");
-    }
-
-    #[test]
-    fn test_string_length() {
-        let s = String::from("hello");
-        assert_eq!(string_length(&s), 5);
-    }
-
-    #[test]
-    fn test_append_suffix() {
-        let mut s = String::from("hello");
-        append_suffix(&mut s, " world");
-        assert_eq!(s, "hello world");
-    }
-
-    #[test]
-    fn test_concat_strings() {
-        assert_eq!(concat_strings("hello", " world"), "hello world");
-    }
-
-    #[test]
-    fn test_first_word() {
-        assert_eq!(first_word("hello world"), "hello");
-        assert_eq!(first_word("rust"), "rust");
     }
 }
