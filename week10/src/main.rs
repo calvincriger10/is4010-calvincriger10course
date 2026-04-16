@@ -27,8 +27,6 @@ fn main() {
     println!("First word: {}", word);
 }
 
-// ================= PROBLEMS =================
-
 fn problem_1() {
     println!("Problem 1");
     let s1 = String::from("hello");
@@ -103,8 +101,6 @@ fn problem_7() {
     println!("  {}", result);
 }
 
-// ================= IMPLEMENTATION =================
-
 fn to_uppercase_owned(s: String) -> String {
     s.to_uppercase()
 }
@@ -127,8 +123,6 @@ fn first_word(s: &str) -> &str {
         None => s,
     }
 }
-
-// ================= TESTS =================
 
 #[cfg(test)]
 mod tests {
