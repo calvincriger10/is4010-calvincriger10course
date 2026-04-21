@@ -6,13 +6,13 @@ fn main() {
     println!("Uncomment one problem at a time and fix it!\n");
 
     // Uncomment problems one at a time:
-     problem_1();
+    problem_1();
     problem_2();
     problem_3();
     problem_4();
-     problem_5();
-     problem_6();
-     problem_7();
+    problem_5();
+    problem_6();
+    problem_7();
 }
 
 // ============================================================================
@@ -22,7 +22,7 @@ fn main() {
 fn problem_1() {
     println!("Problem 1: Value used after move");
     let s1 = String::from("hello");
-    let (s2, len) = calculate_length(&s1);  // add & here
+    let (s2, len) = calculate_length(&s1); // add & here
     println!("  The length of '{}' is {}.", s2, len);
 }
 
@@ -30,7 +30,6 @@ fn calculate_length(s: &String) -> (String, usize) {
     let length = s.len();
     (s.clone(), length)
 }
-
 
 // ============================================================================
 // PROBLEM 2: Immutable and mutable borrow conflict
@@ -40,11 +39,10 @@ fn problem_2() {
     println!("Problem 2: Mutable and immutable borrow conflict");
     let mut s = String::from("hello");
     let r1 = &s;
-    println!("  {}", r1);  // r1 used and done here
-    let r2 = &mut s;       // now this is fine!
+    println!("  {}", r1); // r1 used and done here
+    let r2 = &mut s; // now this is fine!
     println!("  {}", r2);
 }
-
 
 // ============================================================================
 // PROBLEM 3: Mutating through immutable reference
@@ -52,8 +50,8 @@ fn problem_2() {
 
 fn problem_3() {
     println!("Problem 3: Mutating through immutable reference");
-    let mut s = String::from("hello");  // add mut here
-    add_to_string(&mut s);              // change &s to &mut s
+    let mut s = String::from("hello"); // add mut here
+    add_to_string(&mut s); // change &s to &mut s
     println!("  Result: {}", s);
 }
 fn add_to_string(s: &mut String) {
@@ -71,12 +69,11 @@ fn problem_4() {
     {
         let r1 = &mut s;
         println!("  {}", r1);
-    }  // r1 goes out of scope here, mutable borrow ends
+    } // r1 goes out of scope here, mutable borrow ends
 
-    let r2 = &mut s;  // now this is fine!
+    let r2 = &mut s; // now this is fine!
     println!("  {}", r2);
 }
-
 
 // ============================================================================
 // PROBLEM 5: Dangling reference
@@ -90,9 +87,8 @@ fn problem_5() {
 
 fn create_string() -> String {
     let s = String::from("hello");
-    s  // give ownership to whoever called this function
+    s // give ownership to whoever called this function
 }
-
 
 // ============================================================================
 // PROBLEM 6: Ownership in loops
@@ -103,14 +99,13 @@ fn problem_6() {
     let data = String::from("Rust");
 
     for i in 0..3 {
-        print_with_number(&data, i);  // borrow instead of move
+        print_with_number(&data, i); // borrow instead of move
     }
 }
 
 fn print_with_number(s: &str, n: i32) {
     println!("  {}: {}", n, s);
 }
-
 
 // ============================================================================
 // PROBLEM 7: Lifetime extension challenge
@@ -119,10 +114,9 @@ fn print_with_number(s: &str, n: i32) {
 fn problem_7() {
     println!("Problem 7: Lifetime extension");
     let s = String::from("inner scope");
-    let result = &s;  // s lives long enough now!
+    let result = &s; // s lives long enough now!
     println!("  Result: {}", result);
 }
-
 
 // ============================================================================
 // IMPLEMENTATION EXERCISES
