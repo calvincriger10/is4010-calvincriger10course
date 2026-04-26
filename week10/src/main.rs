@@ -1,11 +1,9 @@
 // Lab 10: The Borrow Checker Game
-// Fix each problem one at a time by uncommenting the function call in main()
 
 fn main() {
     println!("Lab 10: Mastering Ownership and Borrowing");
     println!("Uncomment one problem at a time and fix it!\n");
 
-    // Uncomment problems one at a time:
     problem_1();
     problem_2();
     problem_3();
@@ -16,69 +14,62 @@ fn main() {
 }
 
 // ============================================================================
-// PROBLEM 1: Value used after move
+// PROBLEM 1: Fixed - calculate_length now borrows instead of taking ownership
 // ============================================================================
-
 fn problem_1() {
     println!("Problem 1: Value used after move");
     let s1 = String::from("hello");
-    let (s2, len) = calculate_length(&s1); // add & here
-    println!("  The length of '{}' is {}.", s2, len);
+    let len = calculate_length(&s1);
+    println!("  The length of '{}' is {}.", s1, len);
 }
 
-fn calculate_length(s: &String) -> (String, usize) {
-    let length = s.len();
-    (s.clone(), length)
+fn calculate_length(s: &str) -> usize {
+    s.len()
 }
 
 // ============================================================================
-// PROBLEM 2: Immutable and mutable borrow conflict
+// PROBLEM 2: Fixed - use r1 before creating mutable borrow
 // ============================================================================
-
 fn problem_2() {
     println!("Problem 2: Mutable and immutable borrow conflict");
     let mut s = String::from("hello");
     let r1 = &s;
-    println!("  {}", r1); // r1 used and done here
-    let r2 = &mut s; // now this is fine!
+    println!("  {}", r1); // r1 last used here, scope ends
+    let r2 = &mut s; // now OK
     println!("  {}", r2);
 }
 
 // ============================================================================
-// PROBLEM 3: Mutating through immutable reference
+// PROBLEM 3: Fixed - use &mut String and mut variable
 // ============================================================================
-
 fn problem_3() {
     println!("Problem 3: Mutating through immutable reference");
-    let mut s = String::from("hello"); // add mut here
-    add_to_string(&mut s); // change &s to &mut s
+    let mut s = String::from("hello");
+    add_to_string(&mut s);
     println!("  Result: {}", s);
 }
+
 fn add_to_string(s: &mut String) {
     s.push_str(", world");
 }
 
 // ============================================================================
-// PROBLEM 4: Multiple mutable borrows
+// PROBLEM 4: Fixed - use scopes to separate mutable borrows
 // ============================================================================
-
 fn problem_4() {
     println!("Problem 4: Multiple mutable borrows");
     let mut s = String::from("hello");
-
     {
         let r1 = &mut s;
         println!("  {}", r1);
-    } // r1 goes out of scope here, mutable borrow ends
-
-    let r2 = &mut s; // now this is fine!
+    } // r1 goes out of scope here
+    let r2 = &mut s; // now OK
     println!("  {}", r2);
 }
 
 // ============================================================================
-// PROBLEM 5: Dangling reference
+// PROBLEM 5: Fixed - return owned String instead of dangling reference
 // ============================================================================
-
 fn problem_5() {
     println!("Problem 5: Dangling reference");
     let r = create_string();
@@ -86,20 +77,17 @@ fn problem_5() {
 }
 
 fn create_string() -> String {
-    let s = String::from("hello");
-    s // give ownership to whoever called this function
+    String::from("hello")
 }
 
 // ============================================================================
-// PROBLEM 6: Ownership in loops
+// PROBLEM 6: Fixed - borrow data in loop instead of moving
 // ============================================================================
-
 fn problem_6() {
     println!("Problem 6: Ownership in loops");
     let data = String::from("Rust");
-
     for i in 0..3 {
-        print_with_number(&data, i); // borrow instead of move
+        print_with_number(&data, i);
     }
 }
 
@@ -108,13 +96,12 @@ fn print_with_number(s: &str, n: i32) {
 }
 
 // ============================================================================
-// PROBLEM 7: Lifetime extension challenge
+// PROBLEM 7: Fixed - move String declaration outside the inner scope
 // ============================================================================
-
 fn problem_7() {
     println!("Problem 7: Lifetime extension");
     let s = String::from("inner scope");
-    let result = &s; // s lives long enough now!
+    let result = &s;
     println!("  Result: {}", result);
 }
 
@@ -122,25 +109,30 @@ fn problem_7() {
 // IMPLEMENTATION EXERCISES
 // ============================================================================
 
+/// Takes ownership of a String, converts it to uppercase, and returns it.
 fn to_uppercase_owned(s: String) -> String {
     s.to_uppercase()
 }
 
-fn string_length(s: &String) -> usize {
+/// Borrows a string slice and returns its length.
+fn string_length(s: &str) -> usize {
     s.len()
 }
 
+/// Borrows a String mutably and appends a suffix to it.
 fn append_suffix(s: &mut String, suffix: &str) {
-    s.push_str(suffix)
+    s.push_str(suffix);
 }
 
+/// Creates a new String by concatenating two borrowed strings.
 fn concat_strings(s1: &str, s2: &str) -> String {
     format!("{}{}", s1, s2)
 }
 
+/// Finds the first word in a string and returns it as a string slice.
 fn first_word(s: &str) -> &str {
     match s.find(' ') {
-        Some(i) => &s[0..i],
+        Some(i) => &s[..i],
         None => s,
     }
 }
@@ -156,7 +148,7 @@ mod tests {
     #[test]
     fn test_calculate_length_borrows() {
         let s = String::from("testing");
-        let (_s_ref, len) = calculate_length(&s);
+        let len = calculate_length(&s);
         assert_eq!(len, 7);
         assert_eq!(s, "testing");
     }
@@ -181,5 +173,37 @@ mod tests {
             print_with_number(&data, i);
         }
         assert_eq!(data, "Rust");
+    }
+
+    #[test]
+    fn test_to_uppercase_owned() {
+        let s = String::from("hello");
+        let result = to_uppercase_owned(s);
+        assert_eq!(result, "HELLO");
+    }
+
+    #[test]
+    fn test_string_length() {
+        let s = String::from("hello");
+        assert_eq!(string_length(&s), 5);
+    }
+
+    #[test]
+    fn test_append_suffix() {
+        let mut s = String::from("hello");
+        append_suffix(&mut s, " world");
+        assert_eq!(s, "hello world");
+    }
+
+    #[test]
+    fn test_concat_strings() {
+        let result = concat_strings("hello", " world");
+        assert_eq!(result, "hello world");
+    }
+
+    #[test]
+    fn test_first_word() {
+        assert_eq!(first_word("hello world"), "hello");
+        assert_eq!(first_word("rust"), "rust");
     }
 }
