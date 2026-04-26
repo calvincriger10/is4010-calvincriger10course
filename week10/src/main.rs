@@ -23,7 +23,7 @@ fn problem_1() {
     println!("  The length of '{}' is {}.", s1, len);
 }
 
-fn calculate_length(s: &str) -> usize {
+fn calculate_length(s: &String) -> usize {
     s.len()
 }
 
@@ -110,26 +110,31 @@ fn problem_7() {
 // ============================================================================
 
 /// Takes ownership of a String, converts it to uppercase, and returns it.
+#[allow(dead_code)]
 fn to_uppercase_owned(s: String) -> String {
     s.to_uppercase()
 }
 
 /// Borrows a string slice and returns its length.
+#[allow(dead_code)]
 fn string_length(s: &str) -> usize {
     s.len()
 }
 
 /// Borrows a String mutably and appends a suffix to it.
+#[allow(dead_code)]
 fn append_suffix(s: &mut String, suffix: &str) {
     s.push_str(suffix);
 }
 
 /// Creates a new String by concatenating two borrowed strings.
+#[allow(dead_code)]
 fn concat_strings(s1: &str, s2: &str) -> String {
     format!("{}{}", s1, s2)
 }
 
 /// Finds the first word in a string and returns it as a string slice.
+#[allow(dead_code)]
 fn first_word(s: &str) -> &str {
     match s.find(' ') {
         Some(i) => &s[..i],
