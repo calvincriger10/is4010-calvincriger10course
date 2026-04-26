@@ -91,17 +91,9 @@ impl Student {
             return 0.0;
         }
 
-        let total_points: f32 = self
-            .grades
-            .iter()
-            .map(|c| c.quality_points())
-            .sum();
+        let total_points: f32 = self.grades.iter().map(|c| c.quality_points()).sum();
 
-        let total_credits: f32 = self
-            .grades
-            .iter()
-            .map(|c| c.credits as f32)
-            .sum();
+        let total_credits: f32 = self.grades.iter().map(|c| c.credits as f32).sum();
 
         total_points / total_credits
     }
@@ -155,11 +147,7 @@ mod tests {
 
     #[test]
     fn test_gpa() {
-        let mut s = Student::new(
-            "1".to_string(),
-            "Test".to_string(),
-            "x".to_string(),
-        );
+        let mut s = Student::new("1".to_string(), "Test".to_string(), "x".to_string());
 
         s.add_grade(CourseGrade::new(
             "C".to_string(),
